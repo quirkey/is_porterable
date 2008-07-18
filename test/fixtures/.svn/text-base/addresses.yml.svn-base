@@ -1,0 +1,18 @@
+brooklyn: 
+  id: 1
+  address1: 109 Montague St
+  address2: Apt 4R
+  city: Brooklyn    
+  state: NY
+  postal: 11201
+  country: US
+  phone: 212-260-1720
+intersect: 
+  id: 2
+  address1: 648 Broadway
+  address2: 807
+  city: New York
+  state: NY
+  postal: 10012
+  country: US
+  phone: 212-555-2222

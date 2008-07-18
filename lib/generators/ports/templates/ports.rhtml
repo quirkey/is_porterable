@@ -1,0 +1,40 @@
+<h2><%%= controller_name.titlecase %>: Import/Export</h2>
+<ul class="admin_controls">
+	<li><%%= link_to image_tag('admin/icon_list.png') + " Back to List", :action => 'index' %></li>
+	<li><%%= link_to image_tag('admin/icon_export.png') + " Export", :action => "export" %></li>
+	<li><%%= link_to image_tag('admin/icon_import.png') + " Import", :action => "import" %></li>
+	<div class="clear"></div>
+</ul>
+
+<div id="ports">
+<%%= will_paginate @ports %>
+<table>
+	<tr>
+		<th><%%= sorterable_link :im_or_ex, 'Import/Export' %></th>
+		<th><%%= sorterable_link :created_at %></th>
+		<th><%%= sorterable_link :rows_added %></th>
+		<th><%%= sorterable_link :rows_deleted %></th>
+		<th><%%= sorterable_link :rows_updated %></th>	
+	</tr>
+<%% for port in @ports %>
+	<tr id="<%%= dom_id(port) %>" class="<%% if port.im_or_ex == 'im' %>import_row<%% else %>export_row<%% end %>">
+		<td>
+			<%% if port.im_or_ex == 'im' %>Import<%% else %>Export<%% end %>
+		</td>
+		<td><%%= port.created_at %></td>
+		<td><%%= port.rows_added %></td>
+		<td><%%= port.rows_deleted %></td>
+		<td><%%= port.rows_updated %></td>
+	</tr>
+<%% end %>
+</table>
+
+<%%= will_paginate @ports %>
+</div>
+
+<ul class="admin_controls">
+	<li><%%= link_to image_tag('admin/icon_list.png') + " Back to List", :action => 'index' %></li>
+	<li><%%= link_to image_tag('admin/icon_export.png') + " Export", :action => "export" %></li>
+	<li><%%= link_to image_tag('admin/icon_import.png') + " Import", :action => "import" %></li>
+	<div class="clear"></div>
+</ul>

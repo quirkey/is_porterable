@@ -1,0 +1,1 @@
+class <%= file_name.classify %>Port < Port; end;

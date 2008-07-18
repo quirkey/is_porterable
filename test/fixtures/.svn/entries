@@ -1,0 +1,40 @@
+8
+
+dir
+93
+svn://intersectdev.com/artparty/trunk/vendor/plugins/is_porterable/test/fixtures
+svn://intersectdev.com/artparty
+
+
+
+2008-05-16T23:20:05.498839Z
+50
+aaronquint
+
+
+svn:special svn:externals svn:needs-lock
+
+users.yml
+file
+
+
+
+
+2008-05-16T22:54:22.000000Z
+9b867a99ec164e8e06542471af640307
+2008-05-16T23:20:05.498839Z
+50
+aaronquint
+
+addresses.yml
+file
+
+
+
+
+2008-05-16T21:54:29.000000Z
+d4e398b29f9415a09b0cdf82fe039baf
+2008-05-16T23:20:05.498839Z
+50
+aaronquint
+

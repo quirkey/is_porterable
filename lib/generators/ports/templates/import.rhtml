@@ -1,0 +1,14 @@
+<h2><%%= controller_name.titlecase %>: Import</h2>
+<ul class="admin_controls">
+	<li><%%= link_to image_tag('admin/icon_list.png') + " &laquo; Back to List", :action => 'index' %></li>
+	<li><%%= link_to image_tag('admin/icon_export.png') + " Import/Export", :action => "ports" %></li>
+	<div class="clear"></div>
+</ul>
+<%% form_tag({:action => 'scan'}, :multipart => true) do %>
+<fieldset>
+<p><label>Upload your CSV:</label><%%= file_field :import, :file_data %></p>
+<p><%%= radio_button_tag :import_type, 0, :checked => true %>&nbsp;<label class="radio_label" for="import_type_0">Update (Do not delete any rows)</label></p>
+<p><%%= radio_button_tag :import_type, 1 %>&nbsp;<label class="radio_label" for="import_type_1">Reconcile (Full table update)</label></p>
+</fieldset>
+<p><%%= submit_tag "Upload &amp; Import" %></p>
+<%% end %>

@@ -1,0 +1,21 @@
+<h2><%%= controller_name.titlecase %>: Scanning</h2>
+<ul class="admin_controls">
+	<li><%%=  link_to image_tag('admin/icon_list.png') + " &laquo; Back to List", :action => 'index' %></li>
+	<li><%%=  link_to image_tag('admin/icon_export.png') + " Import/Export", :action => "ports" %></li>
+	<div class="clear"></div>
+</ul>
+<%% if @port %>
+<div class="message">
+	<h3>Potential Results</h3>
+	<%% [:rows_added,:rows_updated,:rows_deleted].each do |result| %>
+		<p><strong><%%=  result.to_s.humanize %></strong>: <%%=  @port[result] %></p>
+	<%% end %>
+</div>
+<%% form_tag url_for(:action => 'execute') do %>
+<%%= hidden_field_tag :filename, @filename %>
+<%%= hidden_field_tag :reconcile, @reconcile ? 1 : 0 %>
+<p class="buttons"><%%= submit_tag "Execute Update" %>&nbsp;&nbsp;<%%=  button_to 'Cancel', :action => 'ports' %></p>
+<%% end %>
+<%% else %>
+<div class="message warning">The file could not be read.</div>
+<%% end %>
