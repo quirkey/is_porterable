@@ -46,7 +46,10 @@ module Quirkey
           row.each do |column_name, value|
             column = columns[column_name]
             if column
-              translation = "self.#{column} = \"#{value}\""
+              # Convert double-quotes into escaped double quotes (e.g. " => \")
+              escaped_value = value ? value.gsub("\"", "\\\"") : ""
+              # RAILS_DEFAULT_LOGGER.warn escaped_value
+              translation = "self.#{column} = \"#{escaped_value}\""
               model_instance.instance_eval(translation)
             end
           end

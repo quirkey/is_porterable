@@ -58,7 +58,7 @@ module Quirkey
           input.each do |row|
             row_data = {}
             keys.each_with_index do |key,i|
-              row_data[key.strip] = row[i]
+              row_data[(key || "").strip] = row[i]
             end
             data << row_data
           end
@@ -78,7 +78,7 @@ module Quirkey
           port[:rows_added]   = 0
           db.each do |contact|
             updated_row = old_rows.find {|row| row['id'].to_i == contact.id}
-            updated_row = self.new.clean_csv_row(updated_row)
+            # updated_row = self.new.clean_csv_row(updated_row)
             if updated_row
               contact.attributes = updated_row
               contact.save_with_validation(false) unless test_run
@@ -93,17 +93,24 @@ module Quirkey
           new_rows.each do |row|
             #create new rows
             #new rows should update the row user from the db
-            unless template_class
-              new_contact = self.new(row)
-            else
-              new_contact = template_class.translate_in(self,row)
-            end
+              unless template_class
+                  new_contact = self.new(row)
+                else
+                  new_contact = template_class.translate_in(self,row)
+                end
+            puts "new row"
             if self.unique_field && self.unique_field.is_a?(Symbol) && loaded_contact = self.find(:first, :conditions => {self.unique_field => new_contact.send(self.unique_field)})
-              template_class.translate_in(loaded_contact, row)
+              puts "found old contact"
+              if template_class
+                template_class.translate_in(loaded_contact, row) 
+              else
+                loaded_contact.attributes = row
+              end
               port[:rows_updated] += 1
               loaded_contact.valid?
               loaded_contact.save_with_validation(false) unless test_run
             else
+             
               new_contact.valid?
               new_contact.save_with_validation(false) unless test_run
               port[:rows_added] += 1
@@ -152,15 +159,13 @@ module Quirkey
 
         def set_by_name(attribute, name)
           return unless self.class.reflections.keys.include?(attribute.to_sym)
-          related = self.class.reflections[attribute.to_sym].class_name.constantize.find_first_by_name(name)
+          related = self.class.reflections[attribute.to_sym].class_name.constantize.find_by_name((name || "").downcase)
           write_attribute((attribute + '_id').to_sym,related.id) if related && related.id
         end
 
         def get_by_name(attribute)
           self.send(attribute.to_sym).to_s
         end
-
-
 
         def template
           self.class.template_class
