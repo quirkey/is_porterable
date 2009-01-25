@@ -165,7 +165,7 @@ module Quirkey
           end
         end
         
-        unless defined?(:logger) do
+        unless defined?(:logger)
           def logger
             RAILS_DEFAULT_LOGGER
           end
