@@ -26,6 +26,7 @@ module Porterable
 
         extend Porterable::IsPorterable::ClassMethods
         include Porterable::IsPorterable::InstanceMethods
+        extend Porterable::IsPorterable::AsyncExportMethods if options[:async]
       end
 
     end
@@ -155,7 +156,7 @@ module Porterable
         end
         port
       end
-      
+
       def template_class
         case @template_class
         when Proc
@@ -166,7 +167,7 @@ module Porterable
           @template_class
         end
       end
-      
+
       def export_find_options
         case @export_find_options
         when Proc
@@ -177,7 +178,7 @@ module Porterable
           @export_find_options
         end
       end
-      
+
       unless defined?(:logger)
         def logger
           RAILS_DEFAULT_LOGGER
@@ -233,5 +234,30 @@ module Porterable
         self.class.template_class
       end
     end
+
+    module AsyncExportMethods
+
+      def async_export(export_filename = nil)
+        export_filename ||= Porterable.export_filename(self.table_name)
+        command = "#{Rails.root}/script/runner \"#{self}.to_csv_file('#{export_path(export_filename)}')\" &"
+        logger.info "** running async export with #{command}"
+        system command
+        export_filename
+      end
+
+      def export_path(filename)
+        File.join(export_directory, filename)
+      end
+
+      def export_finished?(filename)
+        File.exists?(export_path(filename))
+      end
+
+      def export_directory
+        File.join(Rails.root, 'exports', self.table_name)
+      end
+
+    end
+
   end
 end
