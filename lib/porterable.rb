@@ -7,11 +7,11 @@ end
 
 module Porterable
 
-  def export_filename(prefix = nil)
+  def self.export_filename(prefix = nil)
     "#{prefix}_export-" + Time.now.strftime("%Y%m%d-%H%M%S") + ".csv"
   end
 
-  def export_content_type(user_agent = nil)
+  def self.export_content_type(user_agent = nil)
     if user_agent =~ /windows/i
       'application/vnd.ms-excel'
     else

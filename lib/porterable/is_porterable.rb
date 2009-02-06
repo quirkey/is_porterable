@@ -64,9 +64,17 @@ module Porterable
       end
 
       def to_csv_file(filename, options = {}, &block)
-        csv_data = to_csv(options, &block)
+        csv_data = to_csv(options) do |count, total_rows|
+          pct = (count.to_f / total_rows.to_f) * 100.0
+          logger.info "Exported row #{count}/#{total_rows} - #{pct}%"
+          yield(count, total_rows) if block_given?
+        end
+        temp_file = Tempfile.new("#{rand Time.now.to_i}-#{rand(1000)}--")
+        temp_file.close
+        temp_path = temp_file.path
+        File.open(temp_path, 'w') {|f| f << csv_data }
         FileUtils.mkdir_p(File.dirname(filename))
-        File.open(filename, 'w') {|f| f << csv_data }
+        FileUtils.mv(temp_path, filename)
       end
 
       def load_csv_str(data)
